@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Not running yet</title>
+		<meta charset="UTF-8">
+		<meta property="og:title" content="Browser tab title game" />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://games.clb92.xyz/browser-tab-title-game" />
+		<meta property="og:description" content="Play a simple side-scroller game on the title of your browser tab." />
+		<meta name="theme-color" content="#FF0000">
+	</head>
+	<body>
+		<p>Look at the browser tab.</p>
+		<script>
+			var game = "__________________Spacebar_to_jump_over:____.__________GO!______";
+			var player = "█";
+			var jumptimer = 0;
+			var cooldown = 0;
+			var difficulty = 0.97;
+			var score = -45;
+			var gameover = false;
+			
+			var keypress = function (e) {
+				if(e.keyCode == 32 && jumptimer == 0 && cooldown == 0) {
+					player = "▀";
+					jumptimer = 6;
+					cooldown = 1;
+				}
+			}
+			
+			var run = function () {
+				function loop() {
+					if (!gameover) {
+						var firstchar = game.charAt(0);
+						
+						game = game.substring(1) + ((Math.random() >= difficulty) && (true) ? "." : "_");
+						difficulty -= 0.00006;
+						score++;
+						jumptimer--;
+						if (jumptimer <= 0) {
+							jumptimer = 0;
+							player = "█";
+							if (cooldown > 0) {
+								cooldown--;
+							}
+						}
+						
+						if (player == "█" && firstchar == ".") {
+							gameover = true;
+						}
+						
+						document.title = player + game;
+						console.log("Score: " + score + " | Difficulty: " + difficulty);
+						var looptimer = setTimeout(loop, 150);
+					} else {
+						document.title = "___FAIL!____" + score + "_points__________________________";
+					}
+				}
+				loop();
+			}
+			
+			window.addEventListener('load', run);
+			window.addEventListener('keydown', keypress);
+		</script>
+	</body>
+</html>
